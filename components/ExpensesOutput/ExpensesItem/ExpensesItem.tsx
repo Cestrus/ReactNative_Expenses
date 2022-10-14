@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { GlobalStyles } from '../../../constans/styles';
+import { getFormattedDate } from '../../../utils/date';
 
 import { IExpensesItemProps } from './ExpensesItem.props';
 
@@ -14,10 +15,10 @@ const ExpensesItem: React.FC<IExpensesItemProps> = ({ description, date, amount,
       <View style={styles.expenseItem}>
         <View>
           <Text style={[styles.textBase, styles.description]}>{description}</Text>
-          <Text style={styles.textBase}>{date.toLocaleDateString()}</Text>
+          <Text style={styles.textBase}>{getFormattedDate(date)}</Text>
         </View>
         <View style={styles.amountContainer}>
-          <Text style={styles.amount}>{amount}</Text>
+          <Text style={styles.amount}>{amount.toFixed(2)}</Text>
         </View>
       </View>
     </Pressable>
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     elevation: 3,
     shadowColor: GlobalStyles.colors.gray500,
-    shadowRadius: 6,
+    shadowRadius: 4,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.4,
   },
@@ -45,16 +46,17 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 16,
-    marginBottom: 8,
+    marginBottom: 4,
     fontWeight: 'bold',
   },
   amountContainer: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 24,
     paddingVertical: 4,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
+    minWidth: 80,
   },
   amount: {
     color: GlobalStyles.colors.primary500,
