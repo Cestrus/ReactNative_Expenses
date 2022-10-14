@@ -10,7 +10,7 @@ import AllExpensesScreen from './screens/AllExpenses/AllExpensesScreen';
 import RecentExpensesScreen from './screens/RecentExpenses/RecentExpensesScreen';
 import ManageExpenseScreen from './screens/ManageExpense/ManageExpenseScreen';
 
-import { BottomTabParamListType, StackParamListType } from './screens/routingTypes';
+import { BottomTabParamListType, StackParamListType } from './globalTypes/routingTypes';
 import { GlobalStyles } from './constans/styles';
 
 const Stack = createNativeStackNavigator<StackParamListType>();

@@ -1,3 +1,3 @@
-import { BottomTabRouteProps } from '../routingTypes';
+import { BottomTabRouteProps } from '../../globalTypes/routingTypes';
 
 export interface IAllExpensesScreen extends BottomTabRouteProps {}

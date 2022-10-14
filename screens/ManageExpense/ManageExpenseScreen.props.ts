@@ -1,3 +1,3 @@
-import { ManageExpenseRouteProps } from '../routingTypes';
+import { ManageExpenseRouteProps } from '../../globalTypes/routingTypes';
 
 export interface IManageExpenseScreen extends ManageExpenseRouteProps {}
