@@ -12,11 +12,16 @@ import ManageExpenseScreen from './screens/ManageExpense/ManageExpenseScreen';
 
 import { BottomTabParamListType, StackParamListType } from './globalTypes/routingTypes';
 import { GlobalStyles } from './constans/styles';
+import IconButton from './components/UI/IconButton/IconButton';
 
 const Stack = createNativeStackNavigator<StackParamListType>();
 const BottonTab = createBottomTabNavigator<BottomTabParamListType>();
 
 const ExpensesOverview: React.FC = () => {
+  const pressAddHandle = (): void => {
+    console.log('press add');
+  };
+
   return (
     <BottonTab.Navigator
       screenOptions={{
@@ -28,6 +33,7 @@ const ExpensesOverview: React.FC = () => {
           backgroundColor: GlobalStyles.colors.primary500,
         },
         tabBarActiveTintColor: GlobalStyles.colors.accent500,
+        headerRight: ({ tintColor }) => <IconButton color={tintColor} size={24} name='add' onPress={pressAddHandle} />,
       }}
     >
       <BottonTab.Screen

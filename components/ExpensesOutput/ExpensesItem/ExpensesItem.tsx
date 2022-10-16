@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { GlobalStyles } from '../../../constans/styles';
 import { getFormattedDate } from '../../../utils/date';
 
@@ -11,7 +11,7 @@ const ExpensesItem: React.FC<IExpensesItemProps> = ({ description, date, amount,
   // };
 
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={onPress} style={({ pressed }): StyleProp<ViewStyle> => pressed && styles.pressed}>
       <View style={styles.expenseItem}>
         <View>
           <Text style={[styles.textBase, styles.description]}>{description}</Text>
@@ -61,5 +61,8 @@ const styles = StyleSheet.create({
   amount: {
     color: GlobalStyles.colors.primary500,
     fontWeight: 'bold',
+  },
+  pressed: {
+    opacity: 0.75,
   },
 });
