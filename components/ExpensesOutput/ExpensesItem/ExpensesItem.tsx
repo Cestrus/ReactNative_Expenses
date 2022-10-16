@@ -8,11 +8,13 @@ import { getFormattedDate } from '../../../utils/date';
 import { IExpensesItemProps } from './ExpensesItem.props';
 import { ManageExpenseNavigationProps } from '../../../globalTypes/routingTypes';
 
-const ExpensesItem: React.FC<IExpensesItemProps> = ({ description, date, amount }) => {
+const ExpensesItem: React.FC<IExpensesItemProps> = ({ id, description, date, amount }) => {
   const navigation = useNavigation<ManageExpenseNavigationProps>();
 
   const onPressHandle = (): void => {
-    navigation.navigate('ManageExpense');
+    navigation.navigate('ManageExpense', {
+      expenseId: id,
+    });
   };
 
   return (

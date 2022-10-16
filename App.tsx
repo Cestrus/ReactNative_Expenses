@@ -33,7 +33,7 @@ const ExpensesOverview: React.FC = () => {
           <IconButton
             color={tintColor}
             size={24}
-            name='add'
+            icon='add'
             onPress={(): void => {
               navigation.navigate('ManageExpense');
             }}
@@ -68,7 +68,14 @@ export default function App(): JSX.Element {
     <>
       <StatusBar style='light' />
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: GlobalStyles.colors.primary500,
+            },
+            headerTintColor: 'white',
+          }}
+        >
           <Stack.Screen
             name='ExpensesOverview'
             component={ExpensesOverview}
@@ -76,7 +83,13 @@ export default function App(): JSX.Element {
               headerShown: false,
             }}
           />
-          <Stack.Screen name='ManageExpense' component={ManageExpenseScreen} />
+          <Stack.Screen
+            name='ManageExpense'
+            component={ManageExpenseScreen}
+            options={{
+              presentation: 'modal',
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>
