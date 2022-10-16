@@ -13,6 +13,7 @@ import ManageExpenseScreen from './screens/ManageExpense/ManageExpenseScreen';
 import { BottomTabParamListType, StackParamListType } from './globalTypes/routingTypes';
 import { GlobalStyles } from './constans/styles';
 import IconButton from './components/UI/IconButton/IconButton';
+import ExpenseContextProviver from './store/expenses-context';
 
 const Stack = createNativeStackNavigator<StackParamListType>();
 const BottonTab = createBottomTabNavigator<BottomTabParamListType>();
@@ -65,7 +66,7 @@ const ExpensesOverview: React.FC = () => {
 
 export default function App(): JSX.Element {
   return (
-    <>
+    <ExpenseContextProviver>
       <StatusBar style='light' />
       <NavigationContainer>
         <Stack.Navigator
@@ -92,7 +93,7 @@ export default function App(): JSX.Element {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </>
+    </ExpenseContextProviver>
   );
 }
 
