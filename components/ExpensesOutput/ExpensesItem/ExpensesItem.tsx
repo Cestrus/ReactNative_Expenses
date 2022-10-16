@@ -1,17 +1,22 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import { GlobalStyles } from '../../../constans/styles';
 import { getFormattedDate } from '../../../utils/date';
 
 import { IExpensesItemProps } from './ExpensesItem.props';
+import { ManageExpenseNavigationProps } from '../../../globalTypes/routingTypes';
 
-const ExpensesItem: React.FC<IExpensesItemProps> = ({ description, date, amount, onPress }) => {
-  // const onPressHandle = ({ target }: GestureResponderEvent): void => {
-  //   console.log(target);
-  // };
+const ExpensesItem: React.FC<IExpensesItemProps> = ({ description, date, amount }) => {
+  const navigation = useNavigation<ManageExpenseNavigationProps>();
+
+  const onPressHandle = (): void => {
+    navigation.navigate('ManageExpense');
+  };
 
   return (
-    <Pressable onPress={onPress} style={({ pressed }): StyleProp<ViewStyle> => pressed && styles.pressed}>
+    <Pressable onPress={onPressHandle} style={({ pressed }): StyleProp<ViewStyle> => pressed && styles.pressed}>
       <View style={styles.expenseItem}>
         <View>
           <Text style={[styles.textBase, styles.description]}>{description}</Text>

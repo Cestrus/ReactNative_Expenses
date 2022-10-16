@@ -5,14 +5,10 @@ import { IExpensesListProps } from './ExpensesList.props';
 import ExpensesItem from '../ExpensesItem/ExpensesItem';
 
 const ExpensesList: React.FC<IExpensesListProps> = ({ expenses }) => {
-  const pressHandler = (): void => {
-    console.log('press');
-  };
-
   return (
     <FlatList
       data={expenses}
-      renderItem={({ item }): JSX.Element => <ExpensesItem {...item} onPress={pressHandler} />}
+      renderItem={({ item }): JSX.Element => <ExpensesItem {...item} />}
       keyExtractor={(item): string => item.id}
     />
   );

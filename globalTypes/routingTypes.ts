@@ -1,6 +1,6 @@
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { NavigatorScreenParams } from '@react-navigation/native';
+import type { NativeStackScreenProps, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { BottomTabScreenProps, BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { NavigatorScreenParams, CompositeNavigationProp } from '@react-navigation/native';
 
 export type BottomTabParamListType = {
   AllExpenses: undefined;
@@ -15,3 +15,8 @@ export type StackParamListType = {
 };
 
 export type ManageExpenseRouteProps = NativeStackScreenProps<StackParamListType, 'ManageExpense'>;
+
+export type ManageExpenseNavigationProps = CompositeNavigationProp<
+  NativeStackNavigationProp<StackParamListType, 'ManageExpense'>,
+  BottomTabNavigationProp<BottomTabParamListType>
+>;
