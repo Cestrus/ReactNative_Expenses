@@ -18,7 +18,7 @@ const ManageExpenseScreen: React.FC<IManageExpenseScreen> = ({ route, navigation
   }, [navigation, isEditable]);
 
   const cancelHandler = (): void => {
-    console.log('cancel');
+    navigation.goBack();
   };
 
   const deleteHandler = (): void => {
