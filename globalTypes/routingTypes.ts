@@ -11,7 +11,9 @@ export type BottomTabRouteProps = BottomTabScreenProps<BottomTabParamListType>;
 
 export type StackParamListType = {
   ExpensesOverview: NavigatorScreenParams<BottomTabParamListType>;
-  ManageExpense: undefined;
+  ManageExpense: {
+    expenseId: string;
+  };
 };
 
 export type ManageExpenseRouteProps = NativeStackScreenProps<StackParamListType, 'ManageExpense'>;
