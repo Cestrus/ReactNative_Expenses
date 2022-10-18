@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Button from '../../components/UI/Button/Button';
 
@@ -6,10 +6,13 @@ import IconButton from '../../components/UI/IconButton/IconButton';
 import { GlobalStyles } from '../../constans/styles';
 
 import { IManageExpenseScreen } from './ManageExpenseScreen.props';
+import { ExpensesContext } from '../../store/expenses-context';
 
 const ManageExpenseScreen: React.FC<IManageExpenseScreen> = ({ route, navigation }) => {
   const expenseId = route.params?.expenseId;
   const isEditable = !!expenseId;
+
+  const expensesCtx = useContext(ExpensesContext);
 
   useEffect(() => {
     navigation.setOptions({
@@ -22,11 +25,24 @@ const ManageExpenseScreen: React.FC<IManageExpenseScreen> = ({ route, navigation
   };
 
   const deleteHandler = (): void => {
-    console.log('delete');
+    expensesCtx.deleteExpense(expenseId);
+    navigation.goBack();
   };
 
   const confirmHandle = (): void => {
-    console.log('confirm');
+    if (isEditable) {
+      expensesCtx.updateExpense(expenseId, {
+        description: 'Rtert ert eterwer ',
+        amount: 11.23,
+        date: new Date('2022-07-02'),
+      });
+    } else {
+      expensesCtx.addExpense({
+        description: 'Asdasd df sfg sdgh ',
+        amount: 12.23,
+        date: new Date('2022-08-12'),
+      });
+    }
   };
 
   return (

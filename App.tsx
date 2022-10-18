@@ -66,34 +66,36 @@ const ExpensesOverview: React.FC = () => {
 
 export default function App(): JSX.Element {
   return (
-    <ExpenseContextProviver>
+    <>
       <StatusBar style='light' />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: GlobalStyles.colors.primary500,
-            },
-            headerTintColor: 'white',
-          }}
-        >
-          <Stack.Screen
-            name='ExpensesOverview'
-            component={ExpensesOverview}
-            options={{
-              headerShown: false,
+      <ExpenseContextProviver>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: GlobalStyles.colors.primary500,
+              },
+              headerTintColor: 'white',
             }}
-          />
-          <Stack.Screen
-            name='ManageExpense'
-            component={ManageExpenseScreen}
-            options={{
-              presentation: 'modal',
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </ExpenseContextProviver>
+          >
+            <Stack.Screen
+              name='ExpensesOverview'
+              component={ExpensesOverview}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name='ManageExpense'
+              component={ManageExpenseScreen}
+              options={{
+                presentation: 'modal',
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ExpenseContextProviver>
+    </>
   );
 }
 
