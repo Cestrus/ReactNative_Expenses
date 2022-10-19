@@ -1,6 +1,6 @@
-import type { TextInput, TextInputProps } from 'react-native';
+import type { TextInputProps } from 'react-native';
 
-export interface IInputProps extends TextInput {
+export interface IInputProps {
   label: string;
-  textInputConfig: TextInputProps;
+  textInputConfig?: TextInputProps;
 }
