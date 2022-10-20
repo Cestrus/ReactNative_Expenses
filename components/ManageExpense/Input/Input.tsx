@@ -4,9 +4,9 @@ import { GlobalStyles } from '../../../constans/styles';
 
 import { IInputProps } from './Input.props';
 
-const Input: React.FC<IInputProps> = ({ label, textInputConfig }) => {
+const Input: React.FC<IInputProps> = ({ label, textInputConfig, style }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
         style={textInputConfig && textInputConfig.multiline ? [styles.input, styles.inputMultiline] : styles.input}
