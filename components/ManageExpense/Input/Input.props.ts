@@ -4,4 +4,5 @@ export interface IInputProps {
   label: string;
   textInputConfig?: TextInputProps;
   style?: StyleProp<ViewStyle>;
+  isValid: boolean;
 }

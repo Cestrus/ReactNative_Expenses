@@ -7,7 +7,7 @@ interface IExpensesContext {
   expenses: ExpenseType[];
   addExpense: (expenseData: Omit<ExpenseType, 'id'>) => void;
   deleteExpense: (id: ExpenseType['id']) => void;
-  updateExpense: (id: ExpenseType['id'], expenseData: Omit<ExpenseType, 'id'>) => void;
+  updateExpense: (expenseData: ExpenseType) => void;
 }
 
 export const ExpensesContext = React.createContext<IExpensesContext>({
@@ -52,8 +52,8 @@ const ExpenseContextProviver: React.FC<React.PropsWithChildren> = ({ children })
     dispatch({ type: TYPE.DELETE, payload: { id } });
   };
 
-  const updateExpense = (id: ExpenseType['id'], expenseData: Omit<ExpenseType, 'id'>): void => {
-    dispatch({ type: TYPE.UPDATE, payload: { ...expenseData, id } });
+  const updateExpense = (expenseData: ExpenseType): void => {
+    dispatch({ type: TYPE.UPDATE, payload: { ...expenseData } });
   };
 
   const contextValue: IExpensesContext = {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -36,7 +35,7 @@ const ExpensesOverview: React.FC = () => {
             size={24}
             icon='add'
             onPress={(): void => {
-              navigation.navigate('ManageExpense');
+              navigation.navigate('ManageExpense', { expenseId: undefined });
             }}
           />
         ),
@@ -98,12 +97,3 @@ export default function App(): JSX.Element {
     </>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });

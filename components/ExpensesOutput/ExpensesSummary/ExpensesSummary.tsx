@@ -9,7 +9,7 @@ const ExpensesSummary: React.FC<IExpensesSummaryProps> = ({ expenses, expensesPe
   return (
     <View style={styles.container}>
       <Text style={styles.period}>{expensesPeriod}</Text>
-      <Text style={styles.sum}>{sum.toFixed(2)}$</Text>
+      <Text style={styles.sum}>${sum.toFixed(2)}</Text>
     </View>
   );
 };

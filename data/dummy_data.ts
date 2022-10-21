@@ -17,18 +17,18 @@ export const DUMMY_DATA: ExpenseType[] = [
     id: 'e3',
     description: 'The shurt',
     amount: 2.5,
-    date: new Date('2021-02-02'),
+    date: new Date('2022-10-14'),
   },
   {
     id: 'e4',
     description: 'The soop',
     amount: 5.55,
-    date: new Date('2021-01-23'),
+    date: new Date('2022-10-14'),
   },
   {
     id: 'e5',
     description: 'The goose',
     amount: 23.5,
-    date: new Date('2021-01-11'),
+    date: new Date('2022-10-15'),
   },
 ];
