@@ -1,5 +1,14 @@
 export interface IFormState {
-  date: string;
-  amount: string;
-  description: string;
+  date: {
+    value: string;
+    isValid: boolean;
+  };
+  amount: {
+    value: string;
+    isValid: boolean;
+  };
+  description: {
+    value: string;
+    isValid: boolean;
+  };
 }

@@ -7,53 +7,37 @@ import { getFormattedDate, toDateFormat } from '../../../utils/date';
 
 import { IExpenseFormPorps } from './ExpenseForm.props';
 import { IFormState } from '../../../globalTypes/formTypes';
+import { checkValid } from '../../../utils/validation';
 
 const ExpenseForm: React.FC<IExpenseFormPorps> = ({ onCancel, onSubmit, submitButtonName, expense }) => {
-  const [inputValue, setInputValue] = useState<IFormState>({
-    amount: expense?.amount.toString() || '',
-    description: expense?.description || '',
-    date: expense ? getFormattedDate(expense?.date) : '',
+  const [inputValues, setInputValues] = useState<IFormState>({
+    amount: { value: expense?.amount.toString() || '', isValid: true },
+    description: { value: expense?.description || '', isValid: true },
+    date: { value: expense ? getFormattedDate(expense?.date) : '', isValid: true },
   });
 
-  const [isValidValues, setIsValidValues] = useState({
-    amount: expense?.amount ? true : false,
-    description: expense?.description ? true : false,
-    date: expense?.date ? true : false,
-  });
-
-  const changeValueHandler = (inputId: string, value: string): void => {
-    setInputValue((prev) => {
+  const changeInputHandler = (inputId: string, value: string): void => {
+    setInputValues((prev) => {
       return {
         ...prev,
-        [inputId]: value,
+        [inputId]: { value, isValid: checkValid(inputId, value) },
       };
     });
   };
 
   const submitHandler = (): void => {
-    const inputDate = toDateFormat(inputValue.date);
+    if (!inputValues.amount.isValid || !inputValues.date.isValid || !inputValues.description.isValid) {
+      return;
+    }
+
+    const inputDate = toDateFormat(inputValues.date.value);
 
     const expenseData = {
       id: expense?.id,
       date: typeof inputDate !== 'string' && inputDate,
-      amount: +inputValue.amount,
-      description: inputValue.description,
+      amount: +inputValues.amount.value,
+      description: inputValues.description.value,
     };
-
-    const isAmountValid = !isNaN(+expenseData.amount) && +expenseData.amount > 0;
-    const isDescriptionValid = expenseData.description.trim().length > 0;
-    const isDateValid = !!expenseData.date;
-    console.log(isDateValid);
-
-    setIsValidValues({
-      date: isDateValid,
-      amount: isAmountValid,
-      description: isDescriptionValid,
-    });
-    console.log(isValidValues);
-    if (!isAmountValid || !isDescriptionValid || !isDateValid) {
-      return;
-    }
     onSubmit(expenseData);
   };
 
@@ -65,11 +49,11 @@ const ExpenseForm: React.FC<IExpenseFormPorps> = ({ onCancel, onSubmit, submitBu
           label='Amaunt'
           textInputConfig={{
             keyboardType: 'number-pad',
-            value: inputValue.amount,
-            onChangeText: (value) => changeValueHandler('amount', value),
+            value: inputValues.amount.value,
+            onChangeText: (value) => changeInputHandler('amount', value),
           }}
           style={styles.rowInput}
-          isValid={isValidValues.amount}
+          isValid={inputValues.amount.isValid}
         />
         <Input
           label='Date  (DD.MM.YYYY)'
@@ -77,11 +61,11 @@ const ExpenseForm: React.FC<IExpenseFormPorps> = ({ onCancel, onSubmit, submitBu
             placeholder: 'DD.MM.YYYY',
             keyboardType: 'number-pad',
             maxLength: 10,
-            value: inputValue.date,
-            onChangeText: (value) => changeValueHandler('date', value),
+            value: inputValues.date.value,
+            onChangeText: (value) => changeInputHandler('date', value),
           }}
           style={styles.rowInput}
-          isValid={isValidValues.date}
+          isValid={inputValues.date.isValid}
         />
       </View>
       <Input
@@ -90,10 +74,10 @@ const ExpenseForm: React.FC<IExpenseFormPorps> = ({ onCancel, onSubmit, submitBu
           keyboardType: 'default',
           multiline: true,
           autoCapitalize: 'sentences',
-          value: inputValue.description,
-          onChangeText: (value) => changeValueHandler('description', value),
+          value: inputValues.description.value,
+          onChangeText: (value) => changeInputHandler('description', value),
         }}
-        isValid={isValidValues.description}
+        isValid={inputValues.description.isValid}
       />
       <View style={styles.buttonContainer}>
         <Button mode='flat' onPress={onCancel} style={styles.button}>
