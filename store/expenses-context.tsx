@@ -1,17 +1,18 @@
 import React, { useReducer } from 'react';
 import { ExpenseType } from '../globalTypes/expenseType';
-import { DUMMY_DATA } from '../data/dummy_data';
 import { ExpensesReducerType, TYPE } from './storeTypes';
 
 interface IExpensesContext {
   expenses: ExpenseType[];
-  addExpense: (expenseData: Omit<ExpenseType, 'id'>) => void;
+  fetchExpense: (expenses: ExpenseType[]) => void;
+  addExpense: (expenseData: ExpenseType) => void;
   deleteExpense: (id: ExpenseType['id']) => void;
   updateExpense: (expenseData: ExpenseType) => void;
 }
 
 export const ExpensesContext = React.createContext<IExpensesContext>({
   expenses: [],
+  fetchExpense: () => {},
   addExpense: () => {},
   deleteExpense: () => {},
   updateExpense: () => {},
@@ -19,12 +20,14 @@ export const ExpensesContext = React.createContext<IExpensesContext>({
 
 const expensesReducer: ExpensesReducerType = (state, action) => {
   switch (action.type) {
+    case TYPE.FETCH: {
+      return [...action.payload];
+    }
     case TYPE.ADD: {
-      const id = new Date().toString + Math.random().toString();
-      return [{ ...action.payload, id: id }, ...state];
+      return [...state, action.payload];
     }
     case TYPE.DELETE: {
-      return state.filter((p) => p.id !== action.payload.id);
+      return state.filter((p) => p.id !== action.payload);
     }
     case TYPE.UPDATE: {
       const expensesWithoutUpdate = state.filter((exp) => exp.id !== action.payload.id);
@@ -42,22 +45,27 @@ const expensesReducer: ExpensesReducerType = (state, action) => {
 };
 
 const ExpenseContextProviver: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [expensesState, dispatch] = useReducer<ExpensesReducerType>(expensesReducer, DUMMY_DATA);
+  const [expensesState, dispatch] = useReducer<ExpensesReducerType>(expensesReducer, []);
 
-  const addExpense = (expenseData: Omit<ExpenseType, 'id'>): void => {
-    dispatch({ type: TYPE.ADD, payload: { ...expenseData } });
+  const addExpense = (expense: ExpenseType): void => {
+    dispatch({ type: TYPE.ADD, payload: expense });
   };
 
   const deleteExpense = (id: ExpenseType['id']): void => {
-    dispatch({ type: TYPE.DELETE, payload: { id } });
+    dispatch({ type: TYPE.DELETE, payload: id });
   };
 
   const updateExpense = (expenseData: ExpenseType): void => {
     dispatch({ type: TYPE.UPDATE, payload: { ...expenseData } });
   };
 
+  const fetchExpense = (expenses: ExpenseType[]): void => {
+    dispatch({ type: TYPE.FETCH, payload: expenses });
+  };
+
   const contextValue: IExpensesContext = {
     expenses: expensesState,
+    fetchExpense,
     addExpense,
     deleteExpense,
     updateExpense,

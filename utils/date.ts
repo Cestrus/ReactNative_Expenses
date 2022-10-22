@@ -1,5 +1,8 @@
 export const getFormattedDate = (date: Date): string => {
-  return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+  const day = date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
+  const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
+
+  return `${day}.${month}.${date.getFullYear()}`;
 };
 
 export const toDateFormat = (string: string): Date | string => {
@@ -7,7 +10,7 @@ export const toDateFormat = (string: string): Date | string => {
   if (dateElements.length !== 3) {
     return 'Invalid Date';
   }
-  return new Date(dateElements[2], dateElements[1], dateElements[0]);
+  return new Date(dateElements[2], dateElements[1] - 1, dateElements[0]);
 };
 
 export const getDateMinusDays = (date: Date, days: number): Date => {
