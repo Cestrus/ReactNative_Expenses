@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native';
 
 import IconButton from '../../components/UI/IconButton/IconButton';
 import ExpenseForm from '../../components/ManageExpense/ExpenseForm/ExpenseForm';
+import ErrorOverlay from '../../components/UI/ErrorOverlay/ErrorOverlay';
+import LoadingOverlay from '../../components/UI/LoadingOverlay/LoadingOverlay';
 
 import { GlobalStyles } from '../../constans/styles';
 import { ExpensesContext } from '../../store/expenses-context';
@@ -10,12 +12,17 @@ import { addExpenseDb, deleteExpenseDb, updateExpenseDb } from '../../utils/http
 
 import { IManageExpenseScreen } from './ManageExpenseScreen.props';
 import { ExpenseType } from '../../globalTypes/expenseType';
-import LoadingOverlay from '../../components/UI/LoadingOverlay/LoadingOverlay';
+import { ErrorType } from '../../globalTypes/errorType';
 
 const ManageExpenseScreen: React.FC<IManageExpenseScreen> = ({ route, navigation }) => {
   const { expenseId } = route.params;
   const isEditable = !!expenseId;
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [gotError, setGotError] = useState<ErrorType>({
+    message: '',
+    hasError: false,
+    onConfirm: () => {},
+  });
 
   const expensesCtx = useContext(ExpensesContext);
   const selectedExpense = expenseId && expensesCtx.expenses.find((exp) => exp.id === expenseId);
@@ -29,22 +36,54 @@ const ManageExpenseScreen: React.FC<IManageExpenseScreen> = ({ route, navigation
   const cancelHandler = (): void => {
     navigation.goBack();
   };
+  const errorHandler = (): void => {
+    setGotError({
+      message: '',
+      hasError: false,
+      onConfirm: () => {},
+    });
+    navigation.goBack();
+  };
 
   const confirmHandle = async (expense: ExpenseType): Promise<void> => {
     setIsLoading(true);
     if (isEditable && expense.id) {
-      const expForUpdateDb: Omit<ExpenseType, 'id'> = {
-        amount: expense.amount,
-        date: expense.date,
-        description: expense.description,
-      };
-      const status = await updateExpenseDb(expense.id, expForUpdateDb);
-      if (status === 200) {
-        expensesCtx.updateExpense(expense);
+      try {
+        const expForUpdateDb: Omit<ExpenseType, 'id'> = {
+          amount: expense.amount,
+          date: expense.date,
+          description: expense.description,
+        };
+        const status = await updateExpenseDb(expense.id, expForUpdateDb);
+        if (status === 200) {
+          expensesCtx.updateExpense(expense);
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          setIsLoading(false);
+          console.log(err);
+          setGotError({
+            hasError: true,
+            message: 'No added to database! Something went wrong!',
+            onConfirm: errorHandler,
+          });
+        }
       }
     } else {
-      const expenseId = await addExpenseDb(expense);
-      expensesCtx.addExpense({ ...expense, id: expenseId });
+      try {
+        const expenseId = await addExpenseDb(expense);
+        expensesCtx.addExpense({ ...expense, id: expenseId });
+      } catch (err) {
+        if (err instanceof Error) {
+          setIsLoading(false);
+          console.log(err);
+          setGotError({
+            hasError: true,
+            message: 'No added to database! Something went wrong!',
+            onConfirm: cancelHandler,
+          });
+        }
+      }
     }
     setIsLoading(false);
     navigation.goBack();
@@ -52,9 +91,21 @@ const ManageExpenseScreen: React.FC<IManageExpenseScreen> = ({ route, navigation
 
   const deleteHandler = async (): Promise<void> => {
     setIsLoading(true);
-    const status = await deleteExpenseDb(expenseId);
-    if (status === 200) {
-      expensesCtx.deleteExpense(expenseId);
+    try {
+      const status = await deleteExpenseDb(expenseId);
+      if (status === 200) {
+        expensesCtx.deleteExpense(expenseId);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setIsLoading(false);
+        console.log(err);
+        setGotError({
+          hasError: true,
+          message: 'Don`t delete expense! Something went wrong!',
+          onConfirm: cancelHandler,
+        });
+      }
     }
     setIsLoading(false);
     navigation.goBack();
@@ -62,6 +113,10 @@ const ManageExpenseScreen: React.FC<IManageExpenseScreen> = ({ route, navigation
 
   if (isLoading) {
     return <LoadingOverlay />;
+  }
+
+  if (gotError.hasError) {
+    return <ErrorOverlay message={gotError.message} onConfirm={gotError.onConfirm} />;
   }
 
   return (
