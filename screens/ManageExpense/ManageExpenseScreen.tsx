@@ -36,6 +36,7 @@ const ManageExpenseScreen: React.FC<IManageExpenseScreen> = ({ route, navigation
   const cancelHandler = (): void => {
     navigation.goBack();
   };
+
   const errorHandler = (): void => {
     setGotError({
       message: '',
@@ -80,7 +81,7 @@ const ManageExpenseScreen: React.FC<IManageExpenseScreen> = ({ route, navigation
           setGotError({
             hasError: true,
             message: 'No added to database! Something went wrong!',
-            onConfirm: cancelHandler,
+            onConfirm: errorHandler,
           });
         }
       }
@@ -103,7 +104,7 @@ const ManageExpenseScreen: React.FC<IManageExpenseScreen> = ({ route, navigation
         setGotError({
           hasError: true,
           message: 'Don`t delete expense! Something went wrong!',
-          onConfirm: cancelHandler,
+          onConfirm: errorHandler,
         });
       }
     }
@@ -115,7 +116,7 @@ const ManageExpenseScreen: React.FC<IManageExpenseScreen> = ({ route, navigation
     return <LoadingOverlay />;
   }
 
-  if (gotError.hasError) {
+  if (gotError.hasError && !isLoading) {
     return <ErrorOverlay message={gotError.message} onConfirm={gotError.onConfirm} />;
   }
 

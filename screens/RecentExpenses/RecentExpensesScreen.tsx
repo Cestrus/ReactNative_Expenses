@@ -53,7 +53,7 @@ const RecentExpensesScreen: React.FC<IRecentExpensesScreen> = ({ navigation }) =
     return <LoadingOverlay />;
   }
 
-  if (gotError.hasError) {
+  if (gotError.hasError && !isLoading) {
     return <ErrorOverlay message={gotError.message} onConfirm={getErrorHandler} />;
   }
 
